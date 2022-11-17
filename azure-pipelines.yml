@@ -66,7 +66,7 @@ stages:
         inputs:
           targetPath: '$(Pipeline.Workspace)'
           publishLocation: 'pipeline'   
-- ${{ if eq(variables.appType,'angular') }}:
+- ${{ if eq(variables.appType,'java') }}:
   - stage: 'BUILD'
     jobs:
     - job: 'BUILD'
