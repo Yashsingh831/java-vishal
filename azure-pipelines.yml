@@ -6,26 +6,87 @@
 #trigger:
 #- master
 
-pool:
-  vmImage: ubuntu-latest
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
 
-steps:
-- task: Maven@4
-  inputs:
-    mavenPomFile: 'pom.xml'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false
-- task: CopyFiles@2
-  inputs:
-    Contents: '**'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+trigger:
+- master
+variables:
+- template: variable.yml
+pool:
+  vmImage: $(vmimage)  
+
+
+stages:
+- ${{ if eq(variables.appType,'angular') }}:
+  - stage: 'BUILD'
+    jobs:
+    - job: 'BUILD'
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: $(nodeversion)
+        displayName: 'Install Node.js'
+
+      - script: |
+          npm install -g @angular/cli
+          npm install
+          ng build --prod
+        displayName: 'npm install and build'
+      - task: CopyFiles@2
+        inputs:
+          Contents: '**'
+          TargetFolder: '$(build.artifactstagingdirectory)'
+
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/dist'
+          ArtifactName: 'drop'
+- ${{ if eq(variables.appType,'dotnet') }}:
+  - stage: 'BUILD'
+    jobs:
+    - job: 'BUILD'  
+      steps:
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'restore'
+          feedsToUse: 'select'
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'build'
+
+
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'publish'
+          publishWebProjects: true
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: '$(Pipeline.Workspace)'
+          publishLocation: 'pipeline'   
+- ${{ if eq(variables.appType,'angular') }}:
+  - stage: 'BUILD'
+    jobs:
+    - job: 'BUILD'
+      steps:
+      - task: Maven@4
+        inputs:
+          mavenPomFile: 'pom.xml'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+      - task: CopyFiles@2
+        inputs:
+          Contents: '**'
+          TargetFolder: '$(build.artifactstagingdirectory)'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
