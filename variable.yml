@@ -1,0 +1,4 @@
+variables:
+  appType: 'java'
+  vmimage: 'ubuntu-latest'
+  
