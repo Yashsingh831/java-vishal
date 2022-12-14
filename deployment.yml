@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: aks
-        image: angularyash.azurecr.io/java:183
+        image: angularyash.azurecr.io/java:314
         ports:
         - containerPort: 8080
