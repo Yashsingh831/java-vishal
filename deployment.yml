@@ -17,7 +17,7 @@ spec:
       containers:
       - name: aks
         image: dockeracr14.azurecr.io/myjenkinspush:1
-        imagePullSecrets: 
-        -  name: myregistrykey
+      imagePullSecrets: 
+      -  name: myregistrykey
         ports:
         - containerPort: 8080
