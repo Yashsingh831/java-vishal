@@ -8,8 +8,8 @@
       <id>central</id>
     </server>
     <server>
-      <username>bestintheworld1900@gmail.com</username>
-      <password>cmVmdGtuOjAxOjE3MDgxNDgxNTU6YjFDNDIxY25qcmlyTlB0S2tSNVNobVRweU96</password>
+      <username>${JFROG_USR}</username>
+      <password>${JFROG_PSW}</password>
       <id>snapshots</id>
     </server>
   </servers>
