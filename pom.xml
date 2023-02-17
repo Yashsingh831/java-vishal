@@ -32,10 +32,15 @@
    </snapshotRepository> 
   </distributionManagement-->
   <distributionManagement>
+    <repository>
+        <id>central</id>
+        <name>a0v0j5guyxuuy-artifactory-primary-0-releases</name>
+        <url>https://yash83.jfrog.io/artifactory/mymaven</url>
+    </repository>
     <snapshotRepository>
         <id>snapshots</id>
         <name>a0v0j5guyxuuy-artifactory-primary-0-snapshots</name>
-        <url>https://yash83.jfrog.io/artifactory/libs-snapshot</url>
+        <url>https://yash83.jfrog.io/artifactory/mymaven</url>
     </snapshotRepository>
 </distributionManagement>
 
