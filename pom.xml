@@ -31,6 +31,13 @@
       <url>http://10.0.5.121:8081/repository/maven-snapshots/</url>
    </snapshotRepository> 
   </distributionManagement-->
+  <distributionManagement>
+    <snapshotRepository>
+        <id>snapshots</id>
+        <name>a0v0j5guyxuuy-artifactory-primary-0-snapshots</name>
+        <url>https://yash83.jfrog.io/artifactory/libs-snapshot</url>
+    </snapshotRepository>
+</distributionManagement>
 
   <dependencies>
     <dependency>
